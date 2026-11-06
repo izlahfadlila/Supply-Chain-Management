@@ -142,8 +142,12 @@ MODELS = {
 }
 
 
-@st.cache_data(show_spinner="Running rolling-origin evaluation ...")
+@st.cache_data(show_spinner="Loading evaluation results ...")
 def evaluate_all():
+    cv_path = os.path.join(_HERE, "cv_results.csv")
+    if os.path.exists(cv_path):
+        return pd.read_csv(cv_path)
+    # Fallback: compute on-the-fly if CSV not found
     df   = load_data()
     rows = []
     for product in PRODUCTS:
